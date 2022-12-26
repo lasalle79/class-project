@@ -1,0 +1,24 @@
+import pandas as pd 
+import pandas_datareader.data as web
+import datetime as dt
+import matplotlib.pyplot as plt
+from matplotlib import style
+
+style.use('seaborn')
+start = dt.datetime(2021,1,1)
+end = dt.datetime(2021,12,31)
+df = web.DataReader('VRSK', 'yahoo', start, end)
+df.to_csv('stocks.csv')
+df = pd.read_csv('stocks.csv', parse_dates=True, index_col = 0)
+print(df)
+pd.set_option("display.precision", 1)
+df = pd.read_csv('stocks.csv', parse_dates=True, index_col = 0)
+df[['Close', 'Volume']].head()
+print(df)
+#df.plot()
+plt.show()
+close = df['Adj Close']
+close.plot()
+df['50ma'] = close.rolling(window=100).mean()
+sma = df['50ma']
+sma
